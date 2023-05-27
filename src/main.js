@@ -9,7 +9,7 @@ const store = createStore({
 	state(){
 		return{
 			pageName: '',
-			num : 0,
+			temp: '',
 		}
 	},
 	getters: {
@@ -20,21 +20,15 @@ const store = createStore({
 	mutations: {
 		setPageName(state, payload) {
 			state.pageName = payload;
-			
-			if(payload == "First")
-			state.num = 1
-
-			if(payload == "Second")
-			state.num = 2
-
-			console.log(state.num)
-
+			console.log(payload)
+			if(payload != 'Sub')
+			state.temp = payload;
+			console.log('temp', state.temp)
 		}
 	},
 	actions: {
 		setPageName(context, payload) {
 			context.commit('setPageName', payload);
-			console.log('setPageName', payload)
 		}
 	}
 })

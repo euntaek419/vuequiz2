@@ -1,13 +1,7 @@
 <template>
   <div class="content">
     <div><h2>Sub</h2></div>
-    <div v-if="num == 1">
-      <button @click="showLayer('First')">Back</button>
-    </div>
-
-    <div v-if="num == 2">
-     <button @click="showLayer('Second')">Back</button>
-    </div>
+      <button @click="showLayer(temp)">Back</button>
 
   </div>
 </template>
@@ -24,7 +18,7 @@ export default {
     },
 
     computed: {
-      ...mapState(['num']),
+      ...mapState(['temp']),
     },
 }
 </script>
