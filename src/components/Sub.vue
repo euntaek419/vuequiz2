@@ -1,25 +1,25 @@
 <template>
   <div class="content">
     <div><h2>Sub</h2></div>
-      <button @click="showLayer(temp)">Back</button>
-
+      <button @click="showLayer('Sub2')">Sub2</button>
+      <button @click="closeLayer()">Back</button>
   </div>
 </template>
 
 <script>
-import {mapActions, mapState} from 'vuex'
+import {mapActions} from 'vuex'
 
 export default {
-    methods:{
-        ...mapActions(['setPageName']),
-        showLayer(param) {
-            this.setPageName(param);
-        },
-    },
 
-    computed: {
-      ...mapState(['temp']),
-    },
+	methods:{
+		...mapActions(['setPageName','closePageName']),
+		showLayer(param) {
+			this.setPageName(param);
+		},
+		closeLayer() {
+			this.closePageName();
+		}
+	},
 }
 </script>
 

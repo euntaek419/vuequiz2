@@ -2,8 +2,7 @@
 	<div class="contents">
 		<button @click="showLayer('First')">First</button>
 		<button @click="showLayer('Second')">Second</button>
-		<component :is="getPageName">
-		</component>
+		<component :is="getPageName"></component>
 	</div>
 </template>
 <script>
@@ -17,7 +16,7 @@ export default {
 		...mapActions(['setPageName']),
 		showLayer(param) {
 			this.setPageName(param);
-		}
+		},
 	}
 }
 </script>

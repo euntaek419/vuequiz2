@@ -1,16 +1,15 @@
 <template>
-	<div class="content">
-		<div><h2>first</h2></div>
-		<button @click="showLayer('Sub')">Sub</button>
-		<button @click="closeLayer()">Back</button>
-		
-	</div>
+  <div class="content">
+    <div><h2>Sub2</h2></div>
+      <button @click="closeLayer()">Back</button>
+  </div>
 </template>
+
 <script>
 import {mapActions} from 'vuex'
 
 export default {
-	
+
 	methods:{
 		...mapActions(['setPageName','closePageName']),
 		showLayer(param) {
@@ -19,10 +18,10 @@ export default {
 		closeLayer() {
 			this.closePageName();
 		}
-	}
-
+	},
 }
 </script>
+
 <style>
 .content {
 	position: fixed;
