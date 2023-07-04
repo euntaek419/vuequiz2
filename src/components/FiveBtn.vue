@@ -12,7 +12,7 @@
 
   <div>
     <span v-for="(item, index) in list" :key="item">
-      <button @click="BtnClicked(index)" :style="{ backgroundColor : Btnonoff[index] }"> {{ item }} </button>
+      <button @click="BtnClicked(index)" :style="{ backgroundColor : Btnonoff[index], color : 'red' }"> {{ item }} </button>
     </span>
   </div>
 
