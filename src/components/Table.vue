@@ -22,8 +22,10 @@
           <div v-for="(value,i) in sorted" :key="i">
             
             <div class="tbody-tr">
-                <span class="tdbox">
+                <span class="tdbox" v-if="i === 0 || sorted[i - 1].계약년 !== value.계약년">
                     <em v-if="i === 0 || sorted[i - 1].계약년 !== value.계약년">{{ value.계약년 }}</em>
+                </span>
+                <span class="tdbox" style="border : none;">
                 </span>
 
 
@@ -40,7 +42,7 @@
                             {{ value.물건거래명 }}
                         </em>
                         <em style="width: 150px;display: inline-block;text-align: center;" v-if="value.물건거래명 == '월세'">
-                           {{ Math.floor(value.보증금액 / 10000) }}억 {{ value.보증금액 % 10000 }}/{{ value.월세금액 }}
+                           {{ Math.floor(value.보증금액 / 10000) }}억 {{ addComma(value.보증금액 % 10000) }}/{{ value.월세금액 }}
                         </em>
 
                         <em style="width: 150px;display: inline-block;text-align: center;" v-if="value.물건거래명 == '전세'" >
@@ -102,7 +104,24 @@ methods:{
     },
     buy(){
         this.data = this.매매
+    },
+    addComma(number) {
+    
+        let strNumber = number.toString();
+    
+        let commaIndex = strNumber.length % 3;
+    
+        let result = strNumber.slice(0, commaIndex);
+    
+        for (let i = commaIndex; i < strNumber.length; i += 3) {
+            if (i !== 0) {
+                result += ',';
+            }
+            result += strNumber.slice(i, i + 3);
     }
+    
+    return result;
+}
 }
 }
 
@@ -155,7 +174,7 @@ methods:{
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid #eeeeee;
+    border-top: 1px solid #eeeeee;
   }
   .tdbox.col5 {
     width: 100% - 56px;
