@@ -1,7 +1,7 @@
 <template>
 <div>
   <div>
-    <ContentLayer></ContentLayer>
+    <ContentsLayer></ContentsLayer>
   </div>
 
   <div>
@@ -15,13 +15,13 @@
 </template>
 
 <script>
-import ContentLayer from '@/components/ContentsLayer.vue'
-import FiveBtn from '@/components/FiveBtn.vue'
+import ContentsLayer from '@/components/ContentsLayer'
+import FiveBtn from '@/components/FiveBtn'
 import Table from '@/components/Table'
 
 export default {
   components: {
-    ContentLayer,
+    ContentsLayer,
     FiveBtn,
     Table
     }

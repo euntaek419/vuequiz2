@@ -1,17 +1,6 @@
 <template>
-    <div>
       <div class="table-container">
         <div class="wrapper">
-          <div class="btn-box">
-            <span>
-                실거래가
-            </span>
-            <span class="sort-btn">
-              <button @click="all">전체</button>
-              <button @click="buy">매매</button>
-              <button @click="rent">전/월세</button>
-            </span>
-          </div>
           <div class="thead-tr">
             <span class="thbox contract">계약일</span>
             <span class="thbox deal">거래</span>
@@ -19,51 +8,36 @@
             <span class="thbox floor">층</span>
           </div>
 
-          <div v-for="(value,i) in sorted" :key="i">
-            
-            <div class="tbody-tr">
-                <span class="tdbox" v-if="i === 0 || sorted[i - 1].계약년 !== value.계약년">
-                    <em v-if="i === 0 || sorted[i - 1].계약년 !== value.계약년">{{ value.계약년 }}</em>
-                </span>
-                <span class="tdbox" style="border : none;">
-                </span>
+          <!-- 연도 -->
+          <div class="tbody-tr" v-for="(value, i) in sorted" :key="i">
+            <span class="tdbox">
+              <em>{{ 계약년(value) }}</em>
+            </span>
 
-
-                <span
-                    class="tdbox col5" 
-                    style="display: flex; justify-content: center; width: 454px"
-                >
-
-                    <span class="intd">
-                        <em style="width: 56px;display: inline-block;">
-                            {{ value.계약월 }}.{{ value.계약일 }}
-                        </em>
-                        <em style="width: 77px;text-align: center;margin: 0 auto;display: inline-block;">
-                            {{ value.물건거래명 }}
-                        </em>
-                        <em style="width: 150px;display: inline-block;text-align: center;" v-if="value.물건거래명 == '월세'">
-                           {{ Math.floor(value.보증금액 / 10000) }}억 {{ addComma(value.보증금액 % 10000) }}/{{ value.월세금액 }}
-                        </em>
-
-                        <em style="width: 150px;display: inline-block;text-align: center;" v-if="value.물건거래명 == '전세'" >
-                            {{ Math.floor(value.전세실거래금액/10000) }}억
-                        </em>
-
-                        <em style="width: 150px;display: inline-block;text-align: center;" v-if="value.물건거래명 == '매매'">
-                            {{ Math.floor(value.매매실거래금액/10000) }}억
-                        </em>
-
-
-                        <em>{{ value.해당층수 }}층</em>
-                    </span>
-                </span>
-            </div>
+            <!-- 연도의 데이터 -->
+            <span
+              class="tdbox col5" 
+              style="display: flex; justify-content: center; width: 454px"
+            >
+              <span class="intd">
+                <em style="width: 56px;display: inline-block;">
+                  {{ value.계약월 }}.{{ value.계약일 }}
+                </em>
+                <em style="width: 77px;text-align: center;margin: 0 auto;display: inline-block;">
+                    {{ value.물건거래명 }}
+                </em>
+                <em style="width: 150px;display: inline-block;text-align: center;">
+                    {{ 금액확인(value) }}
+                </em>
+                <em>{{ value.해당층수 }}층</em>
+              </span>
+            </span>
           </div>
-        
         </div>
-      </div>
     </div>
+
 </template>
+
 
 <script>
 import TableData from '@/js/tableData'
@@ -72,59 +46,36 @@ export default {
 data() {
     return {
         data : TableData,
-        원본 : TableData,
-        전월세 : [],
-        매매 : [],
-    }
-},
-mounted(){
-        for(let i=0; i < this.data.length; i++){
-            if(this.data[i].물건거래명 == "매매"){
-                this.매매.push(this.data[i])
-            }else{
-                this.전월세.push(this.data[i])
-            }
+        임시계약년 : '',
     }
 },
   computed: {
     sorted() {
       return this.data.slice().sort((a, b) => {
-        const dateA = new Date(`${a.계약년}-${a.계약월}-${a.계약일}`);
-        const dateB = new Date(`${b.계약년}-${b.계약월}-${b.계약일}`);
-        return dateA - dateB;
+        return new Date(`${a.계약년}-${a.계약월}-${a.계약일}`) - new Date(`${b.계약년}-${b.계약월}-${b.계약일}`);
       });
     }
   },
 methods:{
-    all(){
-        this.data = this.원본
+    계약년(payload){
+        if(this.임시계약년 == payload.계약년){
+            return 
+        }else{
+            this.임시계약년 = payload.계약년
+            return this.임시계약년
+        }
     },
-    rent(){
-        this.data = this.전월세
-    },
-    buy(){
-        this.data = this.매매
-    },
-    addComma(number) {
-    
-        let strNumber = number.toString();
-    
-        let commaIndex = strNumber.length % 3;
-    
-        let result = strNumber.slice(0, commaIndex);
-    
-        for (let i = commaIndex; i < strNumber.length; i += 3) {
-            if (i !== 0) {
-                result += ',';
-            }
-            result += strNumber.slice(i, i + 3);
+    금액확인(payload){
+        if(payload.물건거래명 == "월세"){
+            return payload.보증금액 + "/" + payload.월세금액
+        }else if(payload.물건거래명 == "전세"){
+            return payload.전세실거래금액
+        }else if(payload.물건거래명 == "매매"){
+            return payload.매매실거래금액
+        }
     }
-    
-    return result;
 }
 }
-}
-
 
 </script>
 
@@ -135,12 +86,6 @@ methods:{
   }
   .wrapper {
     width: 500px;
-  }
-  .btn-box{
-    margin : 10px;
-  }
-  .sort-btn{
-    float: right;
   }
   .thead-tr {
     display: flex;
@@ -174,7 +119,7 @@ methods:{
     display: flex;
     justify-content: center;
     align-items: center;
-    border-top: 1px solid #eeeeee;
+    border: 1px solid #eeeeee;
   }
   .tdbox.col5 {
     width: 100% - 56px;
